@@ -1,7 +1,7 @@
 <template>
   <tr v-bind:class="{ disabled: disabled }">
     <td>
-      <input type="checkbox" v-model="item.checked">
+      <input type="checkbox" v-model="item.enabled">
     </td>
     <td>
       {{item.id}}
@@ -21,20 +21,13 @@
 <script>
 export default {
   name: 'list-item',
-  data () {
-    return {
-      checked: false,
-      num: 0,
-      text: '',
-    }
-  },
   props: [
     'item',
     'extra',
   ],
   computed: {
     disabled () {
-      return !this.item.checked
+      return !this.item.enabled
     },
   },
 }
@@ -44,14 +37,13 @@ export default {
 <style lang="postcss" scoped>
 input {
   font-size: 18px;
-
-  &::disabled {
-    background: #ccc;
-    cursor: not-allowed;
-  }
 }
-tr.disabled {
+input:disabled {
   background: #eee;
+  cursor: not-allowed;
+}
+.disabled td:not(:first-child) {
+  opacity: .3;
 }
 .raw {
   font-size: 10px;
