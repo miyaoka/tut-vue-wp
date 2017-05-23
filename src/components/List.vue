@@ -4,9 +4,10 @@
       <thead>
         <tr>
           <th><input type="checkbox" v-model="enabledAll" v-on:change="onChangeCheck"></th>
-          <th>id</th>
-          <th>num</th>
-          <th>text</th>
+          <th>img</th>
+          <th>gender</th>
+          <th>name</th>
+          <th>number</th>
         </tr>
       </thead>
       <tbody>
@@ -17,10 +18,11 @@
           :extra="extra"
         />
         <tr>
-          <td>{{enabledAll}}</td>
+          <td></td>
+          <td></td>
+          <td></td>
           <td></td>
           <td>{{enabledSum}} / {{allSum}}</td>
-          <td></td>
         </tr>
       </tbody>
     </table>
@@ -32,8 +34,10 @@
 </template>
 
 <script>
+import axios from 'axios'
 import ListItem from './ListItem'
 
+const RANDOM_USER_API = 'https://randomuser.me/api/'
 const NOW_TIME = new Date().getTime()
 const DATE_SPAN = 86400 * 1000 * 7
 const itemCount = 5
@@ -46,9 +50,29 @@ const initItems = Array.apply(null, new Array(itemCount)).map((val, idx) => {
   }
 })
 
+const SHOW_COUNT = 10
+
 export default {
   components: {
     ListItem,
+  },
+  created () {
+    axios.get(RANDOM_USER_API, {
+      params: {
+        seed: 'foobar',
+        results: SHOW_COUNT,
+      },
+    })
+    .then(res => {
+      this.items = res.data.results.map((item, i) => Object.assign(item, {
+        enabled: Math.random() < 0.5,
+        number: Math.floor(Math.random() * 10),
+        id: i,
+      }))
+    })
+    .catch(e => {
+      this.errors.push(e)
+    })
   },
   data () {
     return {
