@@ -1,82 +1,32 @@
 <template>
-  <tr v-bind:class="{ disabled: disabled }">
-    <td>
-      <slide-check-btn
-        :checked.sync="enabled_"
-        @update:checked="() => this.$emit('change')"
-      />
-    </td>
-    <td>
-      {{item.id}}
-    </td>
-    <td>
-      <img :src="picture">
-    </td>
-    <td>
-      {{item.gender}}
-    </td>
-    <td>
-      {{name}}
-    </td>
-    <td>
-      <input type="number" v-model="item.number" :disabled="disabled">
-    </td>
-    <td class="raw" v-if="extra">
-      {{item}}
-    </td>
-  </tr>
+  <label>
+    <input
+      type="checkbox"
+      v-model="mutableChecked"
+      @change="() => this.$emit('update:checked', this.mutableChecked)"
+    >
+    <div class="btn" />
+  </label>
 </template>
 
 <script>
-import SlideCheckBtn from './SlideCheckBtn'
-
 export default {
-  name: 'list-item',
-  components: {
-    SlideCheckBtn,
-  },
+  name: 'slide-check-btn',
   data () {
     return {
-      enabled_: this.enabled,
+      mutableChecked: this.checked,
     }
   },
   props: [
-    'item',
-    'extra',
-    'enabled',
+    'checked',
   ],
-  computed: {
-    disabled () {
-      return !this.enabled_
-    },
-    picture () {
-      return this.item.picture ? this.item.picture.thumbnail : ''
-    },
-    name () {
-      return this.item.name ? `${this.item.name.last} ${this.item.name.first}` : ''
-    },
-  },
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-input {
-  font-size: 18px;
-}
-input:disabled {
-  background: #eee;
-  cursor: not-allowed;
-}
-.disabled td:not(:first-child) {
-  opacity: .3;
-}
-.raw {
-  font-size: 10px;
-}
 
-
-.slide-check {
+label {
   display: block;
   cursor: pointer;
   position: absolute;
@@ -129,7 +79,6 @@ input:disabled {
     }
   }
 }
-
 
 </style>
 

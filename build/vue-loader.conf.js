@@ -9,6 +9,4 @@ module.exports = {
       : config.dev.cssSourceMap,
     extract: isProduction
   }),
-  // other vue-loader options go here
-  postcss: []
 }

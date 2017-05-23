@@ -3,7 +3,11 @@
     <table>
       <thead>
         <tr>
-          <th><input type="checkbox" v-model="enabledAll" v-on:change="onChangeCheck"></th>
+          <th>
+            <slide-check-btn :checked.sync="enabledAll" @change="onChangeCheck" />
+            {{enabledAll}}
+          </th>
+          <th>id</th>
           <th>img</th>
           <th>gender</th>
           <th>name</th>
@@ -15,7 +19,9 @@
           v-for="item in items"
           v-bind:key="item.id"
           :item="item"
+          :enabled="item.enabled"
           :extra="extra"
+          v-on:change="onUpdate"
         />
         <tr>
           <td></td>
@@ -36,8 +42,10 @@
 <script>
 import axios from 'axios'
 import ListItem from './ListItem'
+import SlideCheckBtn from './SlideCheckBtn'
 
-const RANDOM_USER_API = 'https://randomuser.me/api/'
+// const RANDOM_USER_API = 'https://randomuser.me/api/'
+const RANDOM_USER_API = '/static/api/users.json'
 const NOW_TIME = new Date().getTime()
 const DATE_SPAN = 86400 * 1000 * 7
 const itemCount = 5
@@ -50,11 +58,12 @@ const initItems = Array.apply(null, new Array(itemCount)).map((val, idx) => {
   }
 })
 
-const SHOW_COUNT = 10
+const SHOW_COUNT = 5
 
 export default {
   components: {
     ListItem,
+    SlideCheckBtn,
   },
   created () {
     axios.get(RANDOM_USER_API, {
@@ -95,6 +104,9 @@ export default {
     onChangeCheck (e) {
       const src = { enabled: e.target.checked }
       this.items.map(item => Object.assign(item, src))
+    },
+    onUpdate (e) {
+      console.log('onup', e)
     },
   },
 }
