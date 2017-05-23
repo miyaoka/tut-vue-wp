@@ -2,8 +2,8 @@
   <label>
     <input
       type="checkbox"
-      v-model="mutableChecked"
-      @change="() => this.$emit('update:checked', this.mutableChecked)"
+      v-model="checked_"
+      @change="() => this.$emit('update:checked', this.checked_)"
     >
     <div class="btn" />
   </label>
@@ -14,7 +14,7 @@ export default {
   name: 'slide-check-btn',
   data () {
     return {
-      mutableChecked: this.checked,
+      checked_: this.checked,
     }
   },
   props: [

@@ -4,7 +4,11 @@
       <thead>
         <tr>
           <th>
-            <slide-check-btn :checked.sync="enabledAll" @change="onChangeCheck" />
+            <slide-check-btn
+              :checked="enabledAll"
+              @change="onChangeCheck"
+              @update:checked="onChangeCheck"
+            />
             {{enabledAll}}
           </th>
           <th>id</th>
@@ -21,8 +25,14 @@
           :item="item"
           :enabled="item.enabled"
           :extra="extra"
+          :number="item.number"
           v-on:change="onUpdate"
-        />
+        >
+          <slide-check-btn
+            :checked.sync="item.enabled"
+          />
+        </list-item>
+
         <tr>
           <td></td>
           <td></td>
@@ -102,6 +112,7 @@ export default {
   },
   methods: {
     onChangeCheck (e) {
+      console.log('onchange', e.target)
       const src = { enabled: e.target.checked }
       this.items.map(item => Object.assign(item, src))
     },

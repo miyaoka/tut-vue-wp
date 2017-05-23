@@ -1,10 +1,8 @@
 <template>
   <tr v-bind:class="{ disabled: disabled }">
     <td>
-      <slide-check-btn
-        :checked.sync="enabled_"
-        @update:checked="() => this.$emit('change')"
-      />
+      <slot />
+      {{enabled}}
     </td>
     <td>
       {{item.id}}
@@ -19,7 +17,7 @@
       {{name}}
     </td>
     <td>
-      <input type="number" v-model="item.number" :disabled="disabled">
+      <input type="number" v-model="number" :disabled="disabled">
     </td>
     <td class="raw" v-if="extra">
       {{item}}
@@ -35,19 +33,15 @@ export default {
   components: {
     SlideCheckBtn,
   },
-  data () {
-    return {
-      enabled_: this.enabled,
-    }
-  },
   props: [
     'item',
     'extra',
     'enabled',
+    'number',
   ],
   computed: {
     disabled () {
-      return !this.enabled_
+      return !this.enabled
     },
     picture () {
       return this.item.picture ? this.item.picture.thumbnail : ''
