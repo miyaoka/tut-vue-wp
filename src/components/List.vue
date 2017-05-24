@@ -5,9 +5,7 @@
         <tr>
           <th>
             <slide-check-btn
-              :checked="enabledAll"
-              @change="onChangeCheck"
-              @update:checked="onChangeCheck"
+              v-model="allCheck"
             />
             {{enabledAll}}
           </th>
@@ -20,18 +18,12 @@
       </thead>
       <tbody>
         <list-item
-          v-for="item in items"
+          v-for="(item, i) in items"
           v-bind:key="item.id"
-          :item="item"
-          :enabled="item.enabled"
+          v-model="items[i]"
           :extra="extra"
-          :number="item.number"
           v-on:change="onUpdate"
-        >
-          <slide-check-btn
-            :checked.sync="item.enabled"
-          />
-        </list-item>
+        />
 
         <tr>
           <td></td>
@@ -97,6 +89,7 @@ export default {
     return {
       items: initItems,
       extra: false,
+      allCheck: false,
     }
   },
   computed: {
@@ -106,8 +99,23 @@ export default {
     enabledSum () {
       return this.items.reduce((prev, curr) => Number(prev) + (curr.enabled ? Number(curr.number) : 0), 0)
     },
-    enabledAll () {
-      return this.items.every(item => item.enabled)
+    enabledAll: {
+      get: function () {
+        console.log('get')
+        return this.items.every(item => item.enabled)
+      },
+      set: function (newValue) {
+        console.log('set')
+        const src = { enabled: newValue }
+        this.items.map(item => Object.assign(item, src))
+      },
+    },
+  },
+  watch: {
+    allCheck (newValue, old) {
+      console.log('all')
+      const src = { enabled: newValue }
+      this.items.map(item => Object.assign(item, src))
     },
   },
   methods: {

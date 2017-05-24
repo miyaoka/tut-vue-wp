@@ -2,8 +2,8 @@
   <label>
     <input
       type="checkbox"
-      v-model="checked_"
-      @change="() => this.$emit('update:checked', this.checked_)"
+      :value="code"
+      @input="this.$emit('input', $event.target.value)"
     >
     <div class="btn" />
   </label>
@@ -12,13 +12,9 @@
 <script>
 export default {
   name: 'slide-check-btn',
-  data () {
-    return {
-      checked_: this.checked,
-    }
-  },
   props: [
-    'checked',
+    // これによって、 `value` プロパティを別の目的で利用することを許可します。
+    'code',
   ],
 }
 </script>
