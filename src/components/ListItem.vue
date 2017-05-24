@@ -4,7 +4,6 @@
       <slide-check-btn
         v-model="val.enabled"
       />
-      {{val.enabled}}
     </td>
     <td>
       {{val.id}}
@@ -19,7 +18,12 @@
       {{name}}
     </td>
     <td>
-      <input type="number" v-model="val.number" :disabled="disabled">
+      <input
+        type="number"
+        class="number"
+        v-model="val.number"
+        :disabled="disabled"
+      >
     </td>
     <td class="raw" v-if="extra">
       {{val}}
@@ -65,13 +69,16 @@ input {
 }
 input:disabled {
   background: #eee;
-  cursor: not-allowed;
 }
 .disabled td:not(:first-child) {
   opacity: .3;
+  cursor: not-allowed;
 }
 .raw {
   font-size: 10px;
+}
+.number {
+  width: 80px;
 }
 
 

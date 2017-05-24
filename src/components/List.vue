@@ -5,9 +5,8 @@
         <tr>
           <th>
             <slide-check-btn
-              v-model="allCheck"
+              v-model="enabledAll"
             />
-            {{allCheck}}
           </th>
           <th>id</th>
           <th>img</th>
@@ -22,7 +21,7 @@
           v-bind:key="item.id"
           v-model="items[i]"
           :extra="extra"
-          @change="onUpdate"
+          v-on:change="onUpdate"
         />
 
         <tr>
@@ -46,10 +45,10 @@ import axios from 'axios'
 import ListItem from './ListItem'
 import SlideCheckBtn from './SlideCheckBtn'
 
-// const RANDOM_USER_API = 'https://randomuser.me/api/'
-const RANDOM_USER_API = '/static/api/users.json'
+const RANDOM_USER_API = 'https://randomuser.me/api/'
+// const RANDOM_USER_API = '/static/api/users.json'
 
-const SHOW_COUNT = 5
+const SHOW_COUNT = 10
 
 export default {
   components: {
@@ -60,13 +59,12 @@ export default {
     return {
       items: [],
       extra: false,
-      allCheck: false,
     }
   },
   created () {
     axios.get(RANDOM_USER_API, {
       params: {
-        seed: 'foobar',
+  //      seed: 'foobar',
         results: SHOW_COUNT,
       },
     })
@@ -89,22 +87,13 @@ export default {
       return this.items.reduce((prev, curr) => Number(prev) + (curr.enabled ? Number(curr.number) : 0), 0)
     },
     enabledAll: {
-      get: function () {
-        console.log('get')
+      get () {
         return this.items.every(item => item.enabled)
       },
-      set: function (newValue) {
-        console.log('set')
-        const src = { enabled: newValue }
+      set (val) {
+        const src = { enabled: val }
         this.items.map(item => Object.assign(item, src))
       },
-    },
-  },
-  watch: {
-    allCheck (newValue, old) {
-      console.log('all')
-      const src = { enabled: newValue }
-      this.items.map(item => Object.assign(item, src))
     },
   },
   methods: {
@@ -129,6 +118,10 @@ table {
 }
 h1, h2 {
   font-weight: normal;
+}
+
+th {
+  padding: 0 10px;
 }
 
 ul {
