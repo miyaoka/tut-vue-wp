@@ -7,7 +7,7 @@
             <slide-check-btn
               v-model="allCheck"
             />
-            {{enabledAll}}
+            {{allCheck}}
           </th>
           <th>id</th>
           <th>img</th>
@@ -22,7 +22,7 @@
           v-bind:key="item.id"
           v-model="items[i]"
           :extra="extra"
-          v-on:change="onUpdate"
+          @change="onUpdate"
         />
 
         <tr>
@@ -48,17 +48,6 @@ import SlideCheckBtn from './SlideCheckBtn'
 
 // const RANDOM_USER_API = 'https://randomuser.me/api/'
 const RANDOM_USER_API = '/static/api/users.json'
-const NOW_TIME = new Date().getTime()
-const DATE_SPAN = 86400 * 1000 * 7
-const itemCount = 5
-const initItems = Array.apply(null, new Array(itemCount)).map((val, idx) => {
-  return {
-    id: idx,
-    enabled: Math.random() < 0.5,
-    number: Math.floor(Math.random() * 10),
-    date: new Date(NOW_TIME + Math.random() * DATE_SPAN),
-  }
-})
 
 const SHOW_COUNT = 5
 
@@ -66,6 +55,13 @@ export default {
   components: {
     ListItem,
     SlideCheckBtn,
+  },
+  data () {
+    return {
+      items: [],
+      extra: false,
+      allCheck: false,
+    }
   },
   created () {
     axios.get(RANDOM_USER_API, {
@@ -84,13 +80,6 @@ export default {
     .catch(e => {
       this.errors.push(e)
     })
-  },
-  data () {
-    return {
-      items: initItems,
-      extra: false,
-      allCheck: false,
-    }
   },
   computed: {
     allSum () {

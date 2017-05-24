@@ -1,26 +1,28 @@
 <template>
   <tr v-bind:class="{ disabled: disabled }">
     <td>
-      <slide-check-btn v-model="value.enabled" />
-      {{value.enabled}}
+      <slide-check-btn
+        v-model="val.enabled"
+      />
+      {{val.enabled}}
     </td>
     <td>
-      {{value.id}}
+      {{val.id}}
     </td>
     <td>
       <img :src="picture">
     </td>
     <td>
-      {{value.gender}}
+      {{val.gender}}
     </td>
     <td>
       {{name}}
     </td>
     <td>
-      <input type="number" v-model="value.number" :disabled="disabled">
+      <input type="number" v-model="val.number" :disabled="disabled">
     </td>
     <td class="raw" v-if="extra">
-      {{value}}
+      {{val}}
     </td>
   </tr>
 </template>
@@ -32,6 +34,11 @@ export default {
   name: 'list-item',
   components: {
     SlideCheckBtn,
+  },
+  data () {
+    return {
+      val: this.value,
+    }
   },
   props: {
     'value': Object, // special prop received from v-model

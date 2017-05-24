@@ -2,8 +2,8 @@
   <label>
     <input
       type="checkbox"
-      :value="code"
-      @input="this.$emit('input', $event.target.value)"
+      :checked="value"
+      @change="update($event.target.checked)"
     >
     <div class="btn" />
   </label>
@@ -12,10 +12,14 @@
 <script>
 export default {
   name: 'slide-check-btn',
-  props: [
-    // これによって、 `value` プロパティを別の目的で利用することを許可します。
-    'code',
-  ],
+  props: {
+    'value': Boolean,
+  },
+  methods: {
+    update (val) {
+      this.$emit('input', val)
+    },
+  },
 }
 </script>
 
