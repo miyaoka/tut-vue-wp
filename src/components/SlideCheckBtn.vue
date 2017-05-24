@@ -1,5 +1,5 @@
 <template>
-  <label>
+  <label :class="{ enable: value }">
     <input
       type="checkbox"
       :checked="value"
@@ -30,14 +30,20 @@ label {
   display: block;
   cursor: pointer;
   position: absolute;
-
   width: 80px;
   height: 26px;
-  background: #333;
   margin: 20px auto;
   position: relative;
   border-radius: 50px;
   box-shadow: inset 0px 1px 1px rgba(0,0,0,0.5), 0px 1px 0px rgba(255,255,255,0.2);
+
+  transition: all 0.3s ease;
+  background: #666;
+
+  &.enable {
+    background: #0e6;
+  }
+
   &:after {
     content: 'OFF';
     color: #000;

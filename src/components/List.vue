@@ -12,7 +12,7 @@
           <th>img</th>
           <th>gender</th>
           <th>name</th>
-          <th>number</th>
+          <th>{{enabledSum}} / {{allSum}}</th>
         </tr>
       </thead>
       <tbody>
@@ -23,14 +23,6 @@
           :extra="extra"
           v-on:change="onUpdate"
         />
-
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td>{{enabledSum}} / {{allSum}}</td>
-        </tr>
       </tbody>
     </table>
     <label>
@@ -48,7 +40,7 @@ import SlideCheckBtn from './SlideCheckBtn'
 const RANDOM_USER_API = 'https://randomuser.me/api/'
 // const RANDOM_USER_API = '/static/api/users.json'
 
-const SHOW_COUNT = 10
+const SHOW_COUNT = 100
 
 export default {
   components: {
@@ -110,31 +102,23 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style lang="scss" scoped>
 
 table {
   margin: auto;
   font-size: 20px;
-}
-h1, h2 {
-  font-weight: normal;
-}
 
+  border-collapse: collapse;
+  text-align: left;
+  line-height: 1.5;
+  border: 1px solid #ccc;
+}
+thead {
+	background: #04162e;
+  color: #fff;
+}
 th {
   padding: 0 10px;
 }
 
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-
-a {
-  color: #42b983;
-}
 </style>
