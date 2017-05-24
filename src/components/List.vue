@@ -37,10 +37,10 @@ import axios from 'axios'
 import ListItem from './ListItem'
 import SlideCheckBtn from './SlideCheckBtn'
 
-const RANDOM_USER_API = 'https://randomuser.me/api/'
-// const RANDOM_USER_API = '/static/api/users.json'
+// const RANDOM_USER_API = 'https://randomuser.me/api/'
+const RANDOM_USER_API = '/static/api/users.json'
 
-const SHOW_COUNT = 100
+const SHOW_COUNT = 10
 
 export default {
   components: {
