@@ -2,17 +2,17 @@
   <tr :class="{ disabled: disabled }">
     <td>
       <slide-check-btn
-        v-model="val.enabled"
+        v-model="item.enabled"
       />
     </td>
     <td>
-      {{val.id}}
+      {{item.id}}
     </td>
     <td>
-      <img :src="picture">
+      <img :src="picture" class="pic">
     </td>
     <td>
-      {{val.gender}}
+      {{item.gender}}
     </td>
     <td>
       {{name}}
@@ -21,12 +21,12 @@
       <input
         type="number"
         class="number"
-        v-model="val.number"
+        v-model="item.number"
         :disabled="disabled"
       >
     </td>
     <td class="raw" v-if="extra">
-      {{val}}
+      <textarea :value="JSON.stringify(item, null, 2)"></textarea>
     </td>
   </tr>
 </template>
@@ -41,7 +41,7 @@ export default {
   },
   data () {
     return {
-      val: this.value,
+      item: this.value,
     }
   },
   props: {
@@ -53,7 +53,9 @@ export default {
       return !this.value.enabled
     },
     picture () {
-      return this.value.picture ? this.value.picture.thumbnail : ''
+      return this.value.picture
+      ? this.value.picture.medium
+      : ''
     },
     name () {
       return this.value.name ? `${this.value.name.last} ${this.value.name.first}` : ''
@@ -67,10 +69,16 @@ export default {
 
 input {
   font-size: 18px;
+
+  &:disabled {
+    background: #eee;
+  }
 }
-input:disabled {
-  background: #eee;
+
+td {
+  padding: 4px 10px;
 }
+
 td:not(:first-child) {
   transition: all 0.3s ease-out;
 
@@ -83,9 +91,19 @@ td:not(:first-child) {
 .raw {
   font-size: 10px;
 }
+
 .number {
   width: 80px;
 }
 
+.pic {
+  transition: 0.15s ease-in;
+  transform:scale(1);
+  border-radius: 50%;
+
+  .disabled & {
+    transform:scale(.5);
+  }
+}
 </style>
 

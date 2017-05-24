@@ -54,6 +54,7 @@ label {
     font-weight: bold;
     text-shadow: 1px 1px 0px rgba(255,255,255,.15);
   }
+
   &:before {
     content: 'ON';
     color: #27ae60;
@@ -63,6 +64,7 @@ label {
     font: 12px/26px Arial, sans-serif;
     font-weight: bold;
   }
+
   .btn {
     display: block;
     width: 34px;
@@ -78,8 +80,10 @@ label {
     transition: all 0.2s ease-out;
     box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.3);
   }
+
   input[type=checkbox] {
     visibility: hidden;
+
     &:checked + .btn {
       left: 43px;
     }

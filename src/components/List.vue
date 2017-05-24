@@ -3,6 +3,10 @@
     <h2>
       active:{{enabledSum}} / total:{{allSum}}
     </h2>
+    <label>
+      <input type="checkbox" v-model="extra">
+      show raw data
+    </label>
     <table>
       <thead>
         <tr>
@@ -27,10 +31,7 @@
         />
       </tbody>
     </table>
-    <label>
-      <input type="checkbox" v-model="extra">
-      show extra info
-    </label>
+
   </div>
 </template>
 
@@ -99,16 +100,16 @@ export default {
 table {
   margin: auto;
   font-size: 20px;
-
   border-collapse: collapse;
   text-align: left;
-  line-height: 1.5;
   border: 1px solid #ccc;
 }
+
 thead {
 	background: #04162e;
   color: #fff;
 }
+
 th {
   padding: 0 10px;
 }
