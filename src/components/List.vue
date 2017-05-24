@@ -1,5 +1,8 @@
 <template>
   <div>
+    <h2>
+      active:{{enabledSum}} / total:{{allSum}}
+    </h2>
     <table>
       <thead>
         <tr>
@@ -12,7 +15,7 @@
           <th>img</th>
           <th>gender</th>
           <th>name</th>
-          <th>{{enabledSum}} / {{allSum}}</th>
+          <th>number</th>
         </tr>
       </thead>
       <tbody>
@@ -21,7 +24,6 @@
           v-bind:key="item.id"
           v-model="items[i]"
           :extra="extra"
-          v-on:change="onUpdate"
         />
       </tbody>
     </table>
@@ -86,16 +88,6 @@ export default {
         const src = { enabled: val }
         this.items.map(item => Object.assign(item, src))
       },
-    },
-  },
-  methods: {
-    onChangeCheck (e) {
-      console.log('onchange', e.target)
-      const src = { enabled: e.target.checked }
-      this.items.map(item => Object.assign(item, src))
-    },
-    onUpdate (e) {
-      console.log('onup', e)
     },
   },
 }
