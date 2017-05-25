@@ -3,35 +3,49 @@
     <h2>
       active:{{enabledSum}} / total:{{allSum}}
     </h2>
+
     <label>
       <input type="checkbox" v-model="extra">
       show raw data
     </label>
-    <table>
-      <thead>
-        <tr>
-          <th>
-            <slide-check-btn
-              v-model="enabledAll"
-            />
-          </th>
-          <th>id</th>
-          <th>img</th>
-          <th>gender</th>
-          <th>name</th>
-          <th>number</th>
-        </tr>
-      </thead>
-      <tbody>
-        <list-item
-          v-for="(item, i) in items"
-          v-bind:key="item.id"
-          v-model="items[i]"
-          :extra="extra"
-        />
-      </tbody>
-    </table>
+    <fancy-btn @click.native="addItem(2)">
+      Add(2)
+    </fancy-btn>
+    <fancy-btn @click.native="clearItem()">
+      Clear
+    </fancy-btn>
 
+    <div :class="{ isLoading: isLoading }">
+      <table v-if="items.length > 0">
+        <thead>
+          <tr>
+            <th>
+              <slide-check-btn
+                v-model="enabledAll"
+              />
+            </th>
+            <th>id</th>
+            <th>img</th>
+            <th>gender</th>
+            <th>name</th>
+            <th>number</th>
+            <th>del</th>
+          </tr>
+        </thead>
+        <tbody>
+          <list-item
+            v-for="(item, i) in items"
+            v-bind:key="item.id"
+            v-model="items[i]"
+            :extra="extra"
+            :deleteItem="deleteItem"
+          />
+        </tbody>
+      </table>
+      <div v-else>
+        No Data
+      </div>
+    </div>
   </div>
 </template>
 
@@ -39,40 +53,29 @@
 import axios from 'axios'
 import ListItem from './ListItem'
 import SlideCheckBtn from './SlideCheckBtn'
+import FancyBtn from './FancyBtn'
 
-// const RANDOM_USER_API = 'https://randomuser.me/api/'
-const RANDOM_USER_API = './static/api/users.json'
+const RANDOM_USER_API = 'https://randomuser.me/api/'
+// const RANDOM_USER_API = './static/api/users.json'
 
-const SHOW_COUNT = 10
+const INIT_COUNT = 5
 
 export default {
   components: {
     ListItem,
     SlideCheckBtn,
+    FancyBtn,
   },
   data () {
     return {
       items: [],
       extra: false,
+      lastID: 0,
+      loadingCount: 0,
     }
   },
   created () {
-    axios.get(RANDOM_USER_API, {
-      params: {
-  //      seed: 'foobar',
-        results: SHOW_COUNT,
-      },
-    })
-    .then(res => {
-      this.items = res.data.results.map((item, i) => Object.assign(item, {
-        enabled: Math.random() < 0.5,
-        number: Math.floor(Math.random() * 10),
-        id: i,
-      }))
-    })
-    .catch(e => {
-      this.errors.push(e)
-    })
+    this.addItem(INIT_COUNT)
   },
   computed: {
     allSum () {
@@ -90,12 +93,53 @@ export default {
         this.items.map(item => Object.assign(item, src))
       },
     },
+    isLoading () {
+      return this.loadingCount > 0
+    },
+  },
+  methods: {
+    deleteItem (id) {
+      this.items = this.items.filter(item => item.id !== id)
+    },
+    addItem (count) {
+      this.loadingCount++
+
+      axios.get(RANDOM_USER_API, {
+        params: {
+    //      seed: 'foobar',
+          results: count,
+        },
+      })
+      .then(res => {
+        this.items = this.items.concat(
+          res.data.results.map(item => Object.assign(item, {
+            enabled: Math.random() < 0.5,
+            number: Math.floor(Math.random() * 10),
+            id: this.lastID++,
+          }))
+        )
+      })
+      .catch(e => {
+        this.errors.push(e)
+      })
+      .then(() => {
+        this.loadingCount--
+      })
+    },
+    clearItem () {
+      this.items = []
+    },
   },
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+
+.isLoading > * {
+  border: #f00 10px solid;
+  transition: all 0.2s ease-out;
+}
 
 table {
   margin: auto;

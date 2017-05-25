@@ -25,6 +25,11 @@
         :disabled="disabled"
       >
     </td>
+    <td>
+      <fancy-btn @click.native="deleteItem(item.id)">
+        del
+      </fancy-btn>
+    </td>
     <td class="raw" v-if="extra">
       <textarea :value="JSON.stringify(item, null, 2)"></textarea>
     </td>
@@ -33,11 +38,13 @@
 
 <script>
 import SlideCheckBtn from './SlideCheckBtn'
+import FancyBtn from './FancyBtn'
 
 export default {
   name: 'list-item',
   components: {
     SlideCheckBtn,
+    FancyBtn,
   },
   data () {
     return {
@@ -47,6 +54,7 @@ export default {
   props: {
     'value': Object, // special prop received from v-model
     'extra': Boolean,
+    'deleteItem': Function,
   },
   computed: {
     disabled () {
